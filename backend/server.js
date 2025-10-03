@@ -10,27 +10,28 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// CORS setup: allow frontend origins
+// CORS setup: allow frontend origins dynamically
 const allowedOrigins = [
   'http://localhost:3000',
   'https://vigneshtodo.netlify.app',
-  'https://todovignesh.netlify.app', // your current Netlify
+  'https://todovignesh.netlify.app',
+  'https://todoapp-1-l8t1.onrender.com' // add any deployed frontend on Render
 ];
 
 app.use(cors({
   origin: function(origin, callback){
-    if(!origin) return callback(null, true); // allow Postman
-    if(/\.netlify\.app$/.test(origin) || origin === 'http://localhost:3000'){
-      return callback(null, true);
-    }
+    if(!origin) return callback(null, true); // allow Postman / curl
+    if(allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+    if(/\.netlify\.app$/.test(origin)) return callback(null, true);
+    if(/\.onrender\.com$/.test(origin)) return callback(null, true); // allow Render frontends
     return callback(new Error('CORS not allowed'), false);
   },
   credentials: true
 }));
 
-
-
+// Routes
 app.use('/messages', messageRoutes);
+app.use('/tasks', taskRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -41,13 +42,8 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.error("❌ MongoDB connection error:", err));
 
 // Test route
-app.get('/', (req, res) => {
-  res.send("Backend Working");
-});
+app.get('/', (req, res) => res.send("Backend Working"));
 
-// Task routes
-app.use('/tasks', taskRoutes);
-
-// Listen on PORT from Render or fallback to 5000
+// Listen on PORT
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
