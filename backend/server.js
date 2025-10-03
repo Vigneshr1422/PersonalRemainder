@@ -11,10 +11,25 @@ const app = express();
 app.use(express.json());
 
 // CORS setup: allow frontend origins
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://vigneshtodo.netlify.app',
+  'https://todovignesh.netlify.app', // your current Netlify
+];
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://your-netlify-app.netlify.app'],
-  credentials: true,
+  origin: function(origin, callback){
+    if(!origin) return callback(null, true); // allow Postman
+    if(/\.netlify\.app$/.test(origin) || origin === 'http://localhost:3000'){
+      return callback(null, true);
+    }
+    return callback(new Error('CORS not allowed'), false);
+  },
+  credentials: true
 }));
+
+
+
 app.use('/messages', messageRoutes);
 
 // MongoDB connection
