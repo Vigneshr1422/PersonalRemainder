@@ -8,7 +8,7 @@ import { AiOutlineCalendar } from "react-icons/ai";
 const updateTaskStatus = async (id, date, status) => {
   try {
     const res = await fetch(
-      `https://todoapp-slmn.onrender.com/tasks/${id}`,
+      `http://localhost:5000/tasks/${id}`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -145,7 +145,7 @@ const Home = () => {
   const fetchNote = async (taskId) => {
     try {
       const res = await fetch(
-        `https://todoapp-slmn.onrender.com/messages/${taskId}`
+        `http://localhost:5000/messages/${taskId}`
       );
       const data = await res.json();
       if (data.length > 0) {
@@ -163,7 +163,7 @@ const Home = () => {
     if (!note.trim() || !openTask) return;
     try {
       await fetch(
-        `https://todoapp-slmn.onrender.com/messages/${openTask._id}`,
+        `http://localhost:5000/messages/${openTask._id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

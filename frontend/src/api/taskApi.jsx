@@ -12,7 +12,7 @@
 // export const deleteTask = (id) => axios.delete(`${API_URL}/${id}`);
 import axios from 'axios';
 
-const API_URL = 'https://todoapp-slmn.onrender.com/tasks';
+const API_URL = 'http://localhost:5000/tasks';
 
 export const getTasks = () => axios.get(API_URL);
 export const addTask = (task) => axios.post(API_URL, task);

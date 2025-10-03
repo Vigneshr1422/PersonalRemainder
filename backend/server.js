@@ -12,10 +12,7 @@ app.use(express.json());
 
 // CORS setup: allow frontend origins dynamically
 const allowedOrigins = [
-  'http://localhost:3000',
-  'https://vigneshtodo.netlify.app',
-  'https://todovignesh.netlify.app',
-  'https://todoapp-1-l8t1.onrender.com' // add any deployed frontend on Render
+  'http://localhost:3000' // add any deployed frontend on Render
 ];
 
 app.use(cors({
