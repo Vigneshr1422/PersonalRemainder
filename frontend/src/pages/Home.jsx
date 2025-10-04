@@ -163,7 +163,7 @@ const Home = () => {
     if (!note.trim() || !openTask) return;
     try {
       await fetch(
-        `https://personalremainder.onrender.com//messages/${openTask._id}`,
+        `https://personalremainder.onrender.com/messages/${openTask._id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
